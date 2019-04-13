@@ -5,6 +5,7 @@ typedef struct bloco {
     struct bloco *prox;
     int **matriz;
     int linha, coluna;
+    char *nome;
 } Nodo;
 
 void inicializaLista(Nodo **N) {
@@ -31,23 +32,27 @@ void imprimeLista(Nodo *N) {
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
+            printf("\n-----------------\n\n");
+            printf("%s\n\n", aux->nome);
             for(i = 0; i < aux->linha; i++){
                 for(j = 0; j < aux->coluna; j++){
                     printf("%d ", aux->matriz[i][j]);
                 }
                 printf("\n");
             }
+            printf("\n-----------------\n");
         }
     }
 }
 
-void insereInicioLista(Nodo **N, int ***matriz, int linha, int coluna) {
+void insereInicioLista(Nodo **N, int ***matriz, int linha, int coluna, char *nome) {
     Nodo *novo;
     novo = Cria_Nodo();
     novo->matriz = matriz;
     novo->prox = *N;
     novo->linha = linha;
     novo->coluna = coluna;
+    novo->nome = nome;
     *N = novo;
 }
 
@@ -101,20 +106,39 @@ void leMatriz(int **matriz, int lin, int col){
  }
 
 void main(){
-    int linha, coluna, i, j;
+    int linha, coluna, opcao = 0;
+    char nome [50];
     Nodo *lista;
     inicializaLista(&lista);
 
-    printf("linha: ");
-    scanf("%d", &linha);
-    printf("coluna: ");
-    scanf("%d", &coluna);
+    do{
+
+        printf("********************************\n");
+        printf("*                              *\n");
+        printf("* 1 - DECLARAR UMA MATRIZ      *\n");
+        printf("*                              *\n");
+        printf("********************************\n");
+        scanf("%d", &opcao);
+
+        switch(opcao){
+            case 1:
+                printf("Nome da matriz: ");
+                scanf("%s", nome);
+                printf("linha: ");
+                scanf("%d", &linha);
+                printf("coluna: ");
+                scanf("%d", &coluna);
+                int **matriz = criarMatriz(linha, coluna);
+                leMatriz(matriz, linha, coluna);
+                insereInicioLista(&lista, matriz, linha, coluna, nome);
+                imprimeLista(lista);
+            break;
+
+        }
+
+    } while(opcao != 0);
 
 
-    int **matriz = criarMatriz(linha, coluna);
-    leMatriz(matriz, linha, coluna);
-    insereInicioLista(&lista, matriz, linha, coluna);
-    imprimeLista(lista);
 
 
 }
