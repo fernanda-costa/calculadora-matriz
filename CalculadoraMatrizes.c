@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct bloco {
     struct bloco *prox;
     int **matriz;
     int linha, coluna;
-    char *nome;
+    char nome [50];
 } Nodo;
 
 void inicializaLista(Nodo **N) {
@@ -52,7 +53,7 @@ void insereInicioLista(Nodo **N, int ***matriz, int linha, int coluna, char *nom
     novo->prox = *N;
     novo->linha = linha;
     novo->coluna = coluna;
-    novo->nome = nome;
+    strcpy(novo->nome, nome);
     *N = novo;
 }
 
@@ -93,16 +94,6 @@ void leMatriz(int **matriz, int lin, int col){
          }
         printf("\n");
      }
- }
-
- void imprimeMatriz(int **matriz, int linha, int coluna){
- int i, j;
-    for(i = 0; i < linha; i++){
-        for(j = 0; j < coluna; j++){
-            printf("%d ", matriz[i][j]);
-        }
-        printf("\n");
-    }
  }
 
 void main(){
