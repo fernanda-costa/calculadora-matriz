@@ -96,6 +96,27 @@ void leMatriz(int **matriz, int lin, int col){
      }
  }
 
+ int** buscarMatriz(Nodo **N, char **nome){
+    Nodo *aux;
+    int i, j;
+    if(N == NULL){
+        printf("\n A lista está vazia!!");
+    }
+    else{
+        for(aux = N; aux != NULL; aux = aux->prox){
+            if(!strcmp(aux->nome, nome)){
+                printf("\nAchou\n");
+                return aux->matriz;
+            }
+        }
+    }
+
+ }
+
+ void transporMatriz(Nodo *N, char *nome){
+    buscarMatriz(N, nome);
+ }
+
 void main(){
     int linha, coluna, opcao = 0;
     char nome [50];
@@ -107,6 +128,7 @@ void main(){
         printf("********************************\n");
         printf("*                              *\n");
         printf("* 1 - DECLARAR UMA MATRIZ      *\n");
+        printf("* 2 - TRANSPOR UMA MATRIZ      *\n");
         printf("*                              *\n");
         printf("********************************\n");
         scanf("%d", &opcao);
@@ -123,6 +145,11 @@ void main(){
                 leMatriz(matriz, linha, coluna);
                 insereInicioLista(&lista, matriz, linha, coluna, nome);
                 imprimeLista(lista);
+            break;
+            case 2:
+                printf("Nome da matriz a ser transposta: ");
+                scanf("%s", nome);
+                transporMatriz(lista, nome);
             break;
 
         }
