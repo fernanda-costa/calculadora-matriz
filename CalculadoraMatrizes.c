@@ -96,7 +96,7 @@ void leMatriz(int **matriz, int lin, int col){
      }
  }
 
- int** buscarMatriz(Nodo **N, char **nome){
+ int* buscarMatriz(Nodo *N, char *nome){
     Nodo *aux;
     int i, j;
     if(N == NULL){
@@ -105,21 +105,52 @@ void leMatriz(int **matriz, int lin, int col){
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
             if(!strcmp(aux->nome, nome)){
-                printf("\nAchou\n");
-                return aux->matriz;
+                return aux;
             }
         }
     }
 
  }
 
- void transporMatriz(Nodo *N, char *nome){
-    buscarMatriz(N, nome);
+ void transporMatriz(Nodo *N, char *nome, char *nomeTranposta){
+    Nodo *matrizEncontrada = buscarMatriz(N, nome);
+    int linhaTransposta = matrizEncontrada->coluna;
+    int colunaTransposta = matrizEncontrada->linha;
+
+    int **matrizTransposta = criarMatriz(linhaTransposta, colunaTransposta);
+    int i, j;
+
+    printf("\n-----------------\n\n");
+    printf("%s\n\n", matrizEncontrada->nome);
+    for(i = 0; i < matrizEncontrada->linha; i++){
+        for(j = 0; j < matrizEncontrada->coluna; j++){
+            printf("%d ", matrizEncontrada->matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(i = 0; i < linhaTransposta; i++){
+        for(j = 0; j < colunaTransposta; j++){
+            matrizTransposta[i][j] = matrizEncontrada->matriz[j][i];
+        }
+    }
+
+
+    printf("\n-----------------\n\n");
+    printf("%s\n\n", matrizEncontrada->nome);
+    for(i = 0; i < linhaTransposta; i++){
+        for(j = 0; j < colunaTransposta; j++){
+            printf("%d ", matrizTransposta[i][j]);
+        }
+        printf("\n");
+    }
+
+
  }
 
 void main(){
     int linha, coluna, opcao = 0;
-    char nome [50];
+    char nome [50], nomeTransposta[50];
     Nodo *lista;
     inicializaLista(&lista);
 
@@ -149,7 +180,9 @@ void main(){
             case 2:
                 printf("Nome da matriz a ser transposta: ");
                 scanf("%s", nome);
-                transporMatriz(lista, nome);
+                printf("Nome da matriz transposta: ");
+                scanf("%s", nomeTransposta);
+                transporMatriz(lista, nome, nomeTransposta);
             break;
 
         }
