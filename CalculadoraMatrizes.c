@@ -18,7 +18,7 @@ Nodo * Cria_Nodo() {
     p = (Nodo *) malloc(sizeof(Nodo));
 
     if(!p) {
-        printf("Problema de alocação");
+        printf("Problema de alocao");
         exit(0);
     }
 
@@ -29,7 +29,7 @@ void imprimeLista(Nodo *N) {
     Nodo *aux;
     int i, j;
     if(N == NULL){
-        printf("\n A lista está vazia!!");
+        printf("\n A lista est vazia!!");
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
@@ -96,15 +96,16 @@ void leMatriz(int **matriz, int lin, int col){
      }
  }
 
- int* buscarMatriz(Nodo *N, char *nome){
+ Nodo* buscarMatriz(Nodo *N, char *nome){
     Nodo *aux;
     int i, j;
     if(N == NULL){
-        printf("\n A lista está vazia!!");
+        printf("\n A lista est vazia!!");
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
             if(!strcmp(aux->nome, nome)){
+                printf("\nAchou\n");
                 return aux;
             }
         }
@@ -112,39 +113,23 @@ void leMatriz(int **matriz, int lin, int col){
 
  }
 
- void transporMatriz(Nodo *N, char *nome, char *nomeTranposta){
-    Nodo *matrizEncontrada = buscarMatriz(N, nome);
-    int linhaTransposta = matrizEncontrada->coluna;
-    int colunaTransposta = matrizEncontrada->linha;
+ void transporMatriz(Nodo **Lista, char *nome, char *nomeTransposta){
+    Nodo *matrizEncontrada = buscarMatriz(Lista, nome);
+    int i,j;
 
-    int **matrizTransposta = criarMatriz(linhaTransposta, colunaTransposta);
-    int i, j;
 
-    printf("\n-----------------\n\n");
-    printf("%s\n\n", matrizEncontrada->nome);
+    int linhaMatriz = matrizEncontrada->coluna;
+    int colunaMatriz = matrizEncontrada->linha;
+    int **matriz = criarMatriz(linhaMatriz, colunaMatriz);
+
     for(i = 0; i < matrizEncontrada->linha; i++){
         for(j = 0; j < matrizEncontrada->coluna; j++){
-            printf("%d ", matrizEncontrada->matriz[i][j]);
-        }
-        printf("\n");
-    }
-
-    for(i = 0; i < linhaTransposta; i++){
-        for(j = 0; j < colunaTransposta; j++){
-            matrizTransposta[i][j] = matrizEncontrada->matriz[j][i];
+        matriz[j][i] = matrizEncontrada->matriz[i][j];
         }
     }
 
-
-    printf("\n-----------------\n\n");
-    printf("%s\n\n", matrizEncontrada->nome);
-    for(i = 0; i < linhaTransposta; i++){
-        for(j = 0; j < colunaTransposta; j++){
-            printf("%d ", matrizTransposta[i][j]);
-        }
-        printf("\n");
-    }
-
+    insereInicioLista(Lista, matriz, linhaMatriz, colunaMatriz, nomeTransposta);
+    imprimeLista(Lista);
 
  }
 
@@ -160,6 +145,7 @@ void main(){
         printf("*                              *\n");
         printf("* 1 - DECLARAR UMA MATRIZ      *\n");
         printf("* 2 - TRANSPOR UMA MATRIZ      *\n");
+        printf("* 3 - IMPRIME MATRIZES         *\n");
         printf("*                              *\n");
         printf("********************************\n");
         scanf("%d", &opcao);
@@ -184,12 +170,13 @@ void main(){
                 scanf("%s", nomeTransposta);
                 transporMatriz(lista, nome, nomeTransposta);
             break;
+            case 3:
+              imprimeLista(lista);
+            break;
+
 
         }
 
     } while(opcao != 0);
-
-
-
 
 }
