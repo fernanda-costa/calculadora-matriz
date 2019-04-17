@@ -105,7 +105,6 @@ void leMatriz(int **matriz, int lin, int col){
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
             if(!strcmp(aux->nome, nome)){
-                printf("\nAchou\n");
                 return aux;
             }
         }
@@ -124,7 +123,7 @@ void leMatriz(int **matriz, int lin, int col){
 
     for(i = 0; i < matrizEncontrada->linha; i++){
         for(j = 0; j < matrizEncontrada->coluna; j++){
-        matriz[j][i] = matrizEncontrada->matriz[i][j];
+            matriz[j][i] = matrizEncontrada->matriz[i][j];
         }
     }
 
@@ -133,9 +132,47 @@ void leMatriz(int **matriz, int lin, int col){
 
  }
 
+ void somaMatrizes(Nodo **Lista, char *nomeMatriz1, char *nomeMatriz2){
+    Nodo *matriz1 = buscarMatriz(Lista, nomeMatriz1);
+    Nodo *matriz2 = buscarMatriz(Lista, nomeMatriz2);
+    int i, j;
+
+    printf("\nmatriz 1: %s", matriz1->nome);
+    printf("\nmatriz 2: %s", matriz2->nome);
+
+    if(mesmoTamanhoMatrizes(matriz1, matriz2)){
+        int **matrizResultante = criarMatriz(matriz1->linha, matriz2->coluna);
+        for(i = 0; i < matriz1->linha; i++){
+            for(j = 0; j < matriz1->coluna; j++){
+                matrizResultante[i][j] = matriz1->matriz[i][j] + matriz2->matriz[i][j];
+            }
+        }
+
+         printf("\n-----------------\n\n");
+            printf("RESULANTE \n\n");
+            for(i = 0; i < matriz1->linha; i++){
+                for(j = 0; j < matriz1->coluna; j++){
+                    printf("%d ", matrizResultante[i][j]);
+                }
+                printf("\n");
+            }
+            printf("\n-----------------\n");
+    }
+
+
+ }
+
+ int mesmoTamanhoMatrizes(Nodo *matriz1, Nodo *matriz2){
+    if(matriz1->linha != matriz2->linha && matriz1->coluna != matriz2->coluna){
+        return 0;
+    }
+    return 1;
+ }
+
+
 void main(){
     int linha, coluna, opcao = 0;
-    char nome [50], nomeTransposta[50];
+    char nome [50], nome2[50];
     Nodo *lista;
     inicializaLista(&lista);
 
@@ -145,7 +182,8 @@ void main(){
         printf("*                              *\n");
         printf("* 1 - DECLARAR UMA MATRIZ      *\n");
         printf("* 2 - TRANSPOR UMA MATRIZ      *\n");
-        printf("* 3 - IMPRIME MATRIZES         *\n");
+        printf("* 3 - SOMA DE DUAS MATRIZES    *\n");
+        printf("* 4 - IMPRIME MATRIZES         *\n");
         printf("*                              *\n");
         printf("********************************\n");
         scanf("%d", &opcao);
@@ -167,13 +205,19 @@ void main(){
                 printf("Nome da matriz a ser transposta: ");
                 scanf("%s", nome);
                 printf("Nome da matriz transposta: ");
-                scanf("%s", nomeTransposta);
-                transporMatriz(lista, nome, nomeTransposta);
+                scanf("%s", nome2);
+                transporMatriz(lista, nome, nome2);
             break;
             case 3:
+                printf("Nome da primeira matriz: ");
+                scanf("%s", nome);
+                printf("Nome da segunda matriz: ");
+                scanf("%s", nome2);
+                somaMatrizes(&lista, nome, nome2);
+            break;
+            case 4:
               imprimeLista(lista);
             break;
-
 
         }
 
