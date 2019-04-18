@@ -132,7 +132,7 @@ void leMatriz(int **matriz, int lin, int col){
 
  }
 
- void somaMatrizes(Nodo **Lista, char *nomeMatriz1, char *nomeMatriz2){
+ void somaMatrizes(Nodo **Lista, char *nomeMatriz1, char *nomeMatriz2, char *nomeSoma){
     Nodo *matriz1 = buscarMatriz(Lista, nomeMatriz1);
     Nodo *matriz2 = buscarMatriz(Lista, nomeMatriz2);
     int i, j;
@@ -171,24 +171,51 @@ void leMatriz(int **matriz, int lin, int col){
     return 1;
  }
 
+ void diagonalPrimariaMatriz(Nodo *lista, char *nome){
+    Nodo *matriz = buscarMatriz(lista, nome);
+    int i,j;
+
+    printf("\n-----------------\n\n");
+    printf("%s\n\n", matriz->nome);
+    for(i = 0; i < matriz->linha; i++){
+        for(j = 0; j < matriz->coluna; j++){
+            printf("%d ", matriz->matriz[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n------------------------------------\n");
+    printf("\n\n-----  DIAGONAL PRIMARIA  -------\n");
+
+    for(i = 0; i < matriz->linha; i++){
+        for(j = 0; j < matriz->coluna; j++){
+            if(i == j){
+                printf("%d ", matriz->matriz[i][j]);
+            }
+        }
+    }
+    printf("\n\n");
+
+ }
+
 
 void main(){
     int linha, coluna, opcao = 0;
-    char nome [50], nome2[50];
+    char nome [50], nome2[50], nome3[50];
     Nodo *lista;
     inicializaLista(&lista);
 
     do{
 
-        printf("********************************\n");
-        printf("*                              *\n");
-        printf("* 1 - DECLARAR UMA MATRIZ      *\n");
-        printf("* 2 - TRANSPOR UMA MATRIZ      *\n");
-        printf("* 3 - SOMA DE DUAS MATRIZES    *\n");
-        printf("* 4 - IMPRIME MATRIZES         *\n");
-        printf("* 5 - IMPRIME MATRIZ           *\n");
-        printf("*                              *\n");
-        printf("********************************\n");
+        printf("************************************\n");
+        printf("*                                  *\n");
+        printf("* 1 - DECLARAR UMA MATRIZ          *\n");
+        printf("* 2 - TRANSPOR UMA MATRIZ          *\n");
+        printf("* 3 - SOMA DE DUAS MATRIZES        *\n");
+        printf("* 4 - IMPRIME MATRIZES             *\n");
+        printf("* 5 - IMPRIME MATRIZ               *\n");
+        printf("* 6 - DIAGONAL PRIMARIA DA MATRIZ  *\n");
+        printf("*                                  *\n");
+        printf("************************************\n");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -216,7 +243,9 @@ void main(){
                 scanf("%s", nome);
                 printf("Nome da segunda matriz: ");
                 scanf("%s", nome2);
-                somaMatrizes(&lista, nome, nome2);
+                printf("Nome do resultado das soma: ");
+                scanf("%s", nome3);
+                somaMatrizes(&lista, nome, nome2, nome3);
             break;
             case 4:
               imprimeLista(lista);
@@ -225,6 +254,11 @@ void main(){
                 printf("Nome da matriz: ");
                 scanf("%s", nome);
                 //imprimeMatriz(lista, nome);
+            break;
+            case 6:
+                printf("Nome da matriz: ");
+                scanf("%s", nome);
+                diagonalPrimariaMatriz(lista, nome);
             break;
 
         }
