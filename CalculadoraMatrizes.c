@@ -30,7 +30,7 @@ void imprimeLista(Nodo *N) {
     Nodo *aux;
     int i, j;
     if(N == NULL){
-        printf("\n A lista est vazia!!");
+        printf("\n A lista esta vazia!!");
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
@@ -93,7 +93,7 @@ void leMatriz(int **matriz, int lin, int col){
     Nodo *aux;
     int i, j;
     if(N == NULL){
-        printf("\n A lista est vazia!!");
+        printf("\n A lista esta vazia!!");
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
@@ -141,18 +141,9 @@ void leMatriz(int **matriz, int lin, int col){
             }
         }
 
-         printf("\n-----------------\n\n");
-            printf("RESULANTE \n\n");
-            for(i = 0; i < matriz1->linha; i++){
-                for(j = 0; j < matriz1->coluna; j++){
-                    printf("%d ", matrizResultante[i][j]);
-                }
-                printf("\n");
-            }
-            printf("\n-----------------\n");
+        insereInicioLista(Lista, matrizResultante, matriz1->linha, matriz1->coluna, nomeSoma);
+        imprimeMatriz(Lista, nomeSoma);
     }
-
-    insereInicioLista(Lista, matrizResultante, matriz1->linha, matriz1->coluna, "resultado soma");
 
  }
 
@@ -167,16 +158,8 @@ void leMatriz(int **matriz, int lin, int col){
     Nodo *matriz = buscarMatriz(lista, nome);
     int i,j;
 
-    printf("\n-----------------\n\n");
-    printf("%s\n\n", matriz->nome);
-    for(i = 0; i < matriz->linha; i++){
-        for(j = 0; j < matriz->coluna; j++){
-            printf("%d ", matriz->matriz[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n------------------------------------\n");
-    printf("\n\n-----  DIAGONAL PRIMARIA  -------\n");
+    imprimeMatriz(lista, nome);
+    printf("\n\n-----  DIAGONAL PRIMARIA  -------\n\n");
 
     for(i = 0; i < matriz->linha; i++){
         for(j = 0; j < matriz->coluna; j++){
@@ -200,9 +183,7 @@ void leMatriz(int **matriz, int lin, int col){
         }
         printf("\n");
     }
-printf("\n-----------------\n");
-
-
+    printf("\n-----------------\n");
  }
 
 void main(){
