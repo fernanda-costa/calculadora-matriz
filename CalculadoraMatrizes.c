@@ -34,15 +34,7 @@ void imprimeLista(Nodo *N) {
     }
     else{
         for(aux = N; aux != NULL; aux = aux->prox){
-            printf("\n-----------------\n\n");
-            printf("%s\n\n", aux->nome);
-            for(i = 0; i < aux->linha; i++){
-                for(j = 0; j < aux->coluna; j++){
-                    printf("%d ", aux->matriz[i][j]);
-                }
-                printf("\n");
-            }
-            printf("\n-----------------\n");
+            imprimeMatriz(N, aux->nome);
         }
     }
 }
@@ -197,6 +189,21 @@ void leMatriz(int **matriz, int lin, int col){
 
  }
 
+ void imprimeMatriz(Nodo *lista, char *nome){
+    Nodo *matriz = buscarMatriz(lista, nome);
+    int i, j;
+    printf("\n-----------------\n\n");
+    printf("%s\n\n", matriz->nome);
+    for(i = 0; i < matriz->linha; i++){
+        for(j = 0; j < matriz->coluna; j++){
+            printf("%d ", matriz->matriz[i][j]);
+        }
+        printf("\n");
+    }
+printf("\n-----------------\n");
+
+
+ }
 
 void main(){
     int linha, coluna, opcao = 0;
@@ -253,7 +260,7 @@ void main(){
             case 5:
                 printf("Nome da matriz: ");
                 scanf("%s", nome);
-                //imprimeMatriz(lista, nome);
+                imprimeMatriz(lista, nome);
             break;
             case 6:
                 printf("Nome da matriz: ");
