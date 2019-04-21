@@ -147,6 +147,39 @@ void leMatriz(int **matriz, int lin, int col){
 
  }
 
+ void multiplicaMatrizes(Nodo **Lista, char *nomeMatriz1, char *nomeMatriz2, char *nomeMultiplica){
+    Nodo *matriz1 = buscarMatriz(Lista, nomeMatriz1);
+    Nodo *matriz2 = buscarMatriz(Lista, nomeMatriz2);
+    int i, j, k;
+
+    int **matrizResultante;
+
+    printf("\nmatriz 1: %s", matriz1->nome);
+    printf("\nmatriz 2: %s", matriz2->nome);
+
+    if(possivelMultiplicar(matriz1, matriz2)){
+        matrizResultante = criarMatriz(matriz1->linha, matriz2->coluna);
+        for(i = 0; i < matriz1->linha; i++){
+            for(j = 0; j < matriz2->coluna; j++){
+                for(k = 0; k < matriz1->coluna; k++){
+                    matrizResultante[i][j] = matrizResultante[i][j] + (matriz1->matriz[i][k] * matriz2->matriz[k][j]);
+                }
+            }
+        }
+        insereInicioLista(Lista, matrizResultante, matriz1->linha, matriz2->coluna, nomeMultiplica);
+        imprimeMatriz(Lista, nomeMultiplica);
+    }
+
+ }
+
+ int possivelMultiplicar(Nodo *matriz1, Nodo *matriz2){
+    if(matriz1->coluna == matriz2->linha){
+        return 1;
+    }else{
+        return 0;
+    }
+ }
+
  int mesmoTamanhoMatrizes(Nodo *matriz1, Nodo *matriz2){
     if(matriz1->linha != matriz2->linha && matriz1->coluna != matriz2->coluna){
         return 0;
@@ -217,17 +250,18 @@ void main(){
 
     do{
 
-        printf("************************************\n");
-        printf("*                                  *\n");
-        printf("* 1 - DECLARAR UMA MATRIZ          *\n");
-        printf("* 2 - TRANSPOR UMA MATRIZ          *\n");
-        printf("* 3 - SOMA DE DUAS MATRIZES        *\n");
-        printf("* 4 - IMPRIME MATRIZES             *\n");
-        printf("* 5 - IMPRIME MATRIZ               *\n");
-        printf("* 6 - DIAGONAL PRIMARIA DA MATRIZ  *\n");
-        printf("* 7 - SUBTRACAO DE DUAS MATRIZES   *\n");
-        printf("*                                  *\n");
-        printf("************************************\n");
+        printf("*************************************\n");
+        printf("*                                   *\n");
+        printf("* 1 - DECLARAR UMA MATRIZ           *\n");
+        printf("* 2 - TRANSPOR UMA MATRIZ           *\n");
+        printf("* 3 - SOMA DE DUAS MATRIZES         *\n");
+        printf("* 4 - IMPRIME MATRIZES              *\n");
+        printf("* 5 - IMPRIME MATRIZ                *\n");
+        printf("* 6 - DIAGONAL PRIMARIA DA MATRIZ   *\n");
+        printf("* 7 - SUBTRACAO DE DUAS MATRIZES    *\n");
+        printf("* 8 - MULTIPLICACAO DE DUAS MATRIZES*\n");
+        printf("*                                   *\n");
+        printf("*************************************\n");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -281,7 +315,15 @@ void main(){
                 scanf("%s", nome3);
                 subtraiMatrizes(&lista, nome, nome2, nome3);
             break;
-
+            case 8:
+                printf("Nome da primeira matriz: ");
+                scanf("%s", nome);
+                printf("Nome da segunda matriz: ");
+                scanf("%s", nome2);
+                printf("Nome do resultado da multiplicacao: ");
+                scanf("%s", nome3);
+                multiplicaMatrizes(&lista, nome, nome2, nome3);
+            break;
         }
 
     } while(opcao != 0);
