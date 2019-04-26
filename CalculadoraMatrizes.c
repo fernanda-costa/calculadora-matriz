@@ -1,3 +1,5 @@
+//Alunos: Fernanda Moraes Costa & Lucas Matheus Passos da Silva
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
