@@ -58,7 +58,7 @@ int **criarMatriz (int linha, int coluna){
         return 0;
     }
 
-    m = (int **) malloc (sizeof(int *));
+    m = (int **) malloc (linha * sizeof(int *));
 
     if (!m) {
         printf ("Problema de alocacao.");
@@ -66,7 +66,7 @@ int **criarMatriz (int linha, int coluna){
      }
 
     for (i = 0; i < linha; i++ ) {
-        m[i] = (int *) malloc (sizeof(int));
+        m[i] = (int *) malloc (coluna * sizeof(int));
         if (!m[i]) {
             printf ("Problema de alocacao.");
             return 0;
@@ -103,6 +103,33 @@ void leMatriz(int **matriz, int lin, int col){
         }
     }
 
+ }
+
+ void retiraLista(Nodo *N, char *nome){
+    Nodo *aux;
+    aux = N;
+    if(N == NULL){
+        printf("\n A lista esta vazia!!");
+    }else if(strcmp(N->nome, nome)){
+        if(N->prox == NULL){
+            N = N->prox;
+        }else{
+            free(N);
+            N = Cria_Nodo();
+        }
+    }
+    else if(N->prox != NULL){
+        for(; N->prox != NULL; N = N->prox){
+            if(!strcmp(N->prox->nome, nome)){
+                if(N->prox->prox != NULL){
+                    N->prox = N->prox->prox;
+                }else{
+                    N->prox = NULL;
+                }
+            }
+        }
+        N = aux;
+    }
  }
 
  void transporMatriz(Nodo **Lista, char *nome, char *nomeTransposta){
@@ -170,6 +197,56 @@ void leMatriz(int **matriz, int lin, int col){
         imprimeMatriz(Lista, nomeMultiplica);
     }
 
+ }
+
+ void divideMatrizes(Nodo **Lista, char *nomeMatriz1, char *nomeMatriz2, char *nomeMultiplica){
+    Nodo *matriz1 = buscarMatriz(Lista, nomeMatriz1);
+    Nodo *matriz2 = buscarMatriz(Lista, nomeMatriz2);
+    int i, j;
+
+    int **matrizResultante;
+
+    if(possivelDividir(matriz1, matriz2)){
+        matrizResultante = criarMatriz(matriz1->linha, matriz1->coluna);
+        for(i = 0; i < matriz1->linha; i++){
+            for(j = 0; j < matriz1->coluna; j++){
+                matrizResultante[i][j] = matriz1->matriz[i][j] / matriz2->matriz[i][j];
+            }
+        }
+        insereInicioLista(Lista, matrizResultante, matriz1->linha, matriz2->coluna, nomeMultiplica);
+        imprimeMatriz(Lista, nomeMultiplica);
+    }
+
+}
+
+void destroiMatriz(Nodo *Lista, char *nomeMatriz1){
+    Nodo *matriz = buscarMatriz(Lista, nomeMatriz1);
+    if(matriz != NULL){
+        int i;
+
+        for(i = 0; i < matriz->linha; i++){
+            free(matriz->matriz[i]);
+        }
+        free(matriz->matriz);
+        retiraLista(Lista, nomeMatriz1);
+    }
+}
+
+
+int possivelDividir(Nodo *matriz1, Nodo *matriz2){
+    int i, j;
+    if(mesmoTamanhoMatrizes(matriz1, matriz2)){
+        for(i = 0; i < matriz2->linha; i++){
+            for(j = 0; j < matriz2->coluna; j++){
+                if(matriz2->matriz[i][j] == 0){
+                    return 0;
+                }
+            }
+        }
+        return 1;
+    }else{
+        return 0;
+    }
  }
 
  int possivelMultiplicar(Nodo *matriz1, Nodo *matriz2){
@@ -260,6 +337,9 @@ void main(){
         printf("* 6 - DIAGONAL PRIMARIA DA MATRIZ   *\n");
         printf("* 7 - SUBTRACAO DE DUAS MATRIZES    *\n");
         printf("* 8 - MULTIPLICACAO DE DUAS MATRIZES*\n");
+        printf("* 9 - DIVISAO UTILIZANDO MATRIZES   *\n");
+        printf("* 10 - DESTRUIR MATRIZ              *\n");
+        printf("* 0 - SAIR                          *\n");
         printf("*                                   *\n");
         printf("*************************************\n");
         scanf("%d", &opcao);
@@ -324,8 +404,24 @@ void main(){
                 scanf("%s", nome3);
                 multiplicaMatrizes(&lista, nome, nome2, nome3);
             break;
+            case 9:
+                printf("Nome da primeira matriz: ");
+                scanf("%s", nome);
+                printf("Nome da segunda matriz: ");
+                scanf("%s", nome2);
+                printf("Nome do resultado da multiplicacao: ");
+                scanf("%s", nome3);
+                divideMatrizes(&lista, nome, nome2, nome3);
+            break;
+            case 10:
+                printf("Nome da matriz: ");
+                scanf("%s", nome);
+                destroiMatriz(&lista, nome);
+            break;
         }
 
     } while(opcao != 0);
+
+    free(lista);
 
 }
